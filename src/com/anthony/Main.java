@@ -21,6 +21,10 @@ public class Main {
     public static void main(String[] args) {
         // Use this to change the amount of houses on the street
         int[] recyclingCrates  = new int[8];
+        // Create arrays to store the houses with the most or lowest amount of crates
+        // This will handle ties by storing multiple house values
+        ArrayList<Integer> highestHouses = new ArrayList<Integer>();
+        ArrayList<Integer> lowestHouses = new ArrayList<Integer>();
         // Get the values for crates at each house
         recyclingCrates  = getUserValues(recyclingCrates);
         // Find the total amount of crates
@@ -29,30 +33,49 @@ public class Main {
         int largestCrateAmount = findLargestAmount(recyclingCrates);
         // Find least crate amount
         int leastCrateAmount = findLeastAmount(recyclingCrates);
-        // Find house with largest amount of recycling
-        int houseLargest = findHouseLargest(recyclingCrates, largestCrateAmount);
+        // Find houses with largest amount of recycling
+        findHouseLargest(recyclingCrates, largestCrateAmount, highestHouses);
+        // Find houses with least crate amount
+        findHouseLeast(recyclingCrates, leastCrateAmount, lowestHouses);
+
         // Output calculations
         System.out.println("The total number of crates for this street is: " + totalCrates);
         System.out.println("The largest amount of crates a house has on this street is: " + largestCrateAmount);
-        System.out.println("The fewest amount of crate a house has on this street is:  " + leastCrateAmount);
-        System.out.println("The house with the most crates is: House " + houseLargest);
+        System.out.println("The fewest amount of crates a house has on this street is: " + leastCrateAmount);
+        for (int house:highestHouses) {
+            System.out.println(house + " has the most amount of crates : " + largestCrateAmount);
+        }
+        for (int house:lowestHouses) {
+            System.out.println(house + " has the least amount of crates: " + leastCrateAmount);
+        }
         //Close scanners
         numberScanner.close();
         stringScanner.close();
 
     }
 
+    // Method to find the houses with the least amount of crates
+    private static void findHouseLeast(int[] recyclingCrates, int leastCrateAmount, ArrayList<Integer> lowestHouses) {
+        int houseWithLeastAmount = 0;
+        // Loop through recyclingCrates to find the house with the least crates and set
+        for (int i = 0; i < recyclingCrates.length; i++) {
+            int recyclingCrate = recyclingCrates[i];
+            if (recyclingCrate == leastCrateAmount){
+                lowestHouses.add(i);
+            }
+        }
+    }
+
     // Method to find the house with the most crates
-    private static int findHouseLargest(int[] recyclingCrates, int largestCrateAmount) {
+    private static void findHouseLargest(int[] recyclingCrates, int largestCrateAmount, ArrayList<Integer> highestHouses) {
         int houseWithLargestAmount = 0;
         // Loop through recyclingCrates to find the house with the most crates and set
         for (int i = 0; i < recyclingCrates.length; i++) {
             int recyclingCrate = recyclingCrates[i];
             if (recyclingCrate == largestCrateAmount){
-                houseWithLargestAmount = i;
+                highestHouses.add(i);
             }
         }
-        return houseWithLargestAmount;
     }
 
     // Method to find the least amount of crates
